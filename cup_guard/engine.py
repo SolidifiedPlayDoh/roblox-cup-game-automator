@@ -24,6 +24,7 @@ from cup_guard.core import (
     draw_preview_frame,
     handle_cup_transition,
     is_zero_key,
+    logical_monitor_rect,
     monitor_region,
     preview_region,
     press_e,
@@ -46,8 +47,9 @@ class LiveState:
     mean_r: float = 0.0
     e_presses: int = 0
     q_presses: int = 0
-    message: str = "Press 0 on cup rim to arm"
+    message: str = "Hover over the bottom rim of the cup and press 0"
     preview: Image.Image | None = None
+    monitor_rect: tuple[int, int, int, int] | None = None
     auto_e: bool = True
     auto_q: bool = True
     sensitivity: float = 0.52
@@ -112,27 +114,50 @@ class MonitorEngine:
     def set_monitoring(self, enabled: bool) -> None:
         if enabled:
             if self._config is None or self._config.baseline is None:
-                self._emit(message="Arm first — press 0 on cup rim")
+                self._emit(
+                    message="Hover over the bottom rim of the cup and press 0"
+                )
                 return
             self._start_monitor_loop()
         else:
             self._stop_monitor_loop()
-            self._emit(monitoring=False, message="Monitoring paused")
+            rect = None
+            with self._lock:
+                if self._config is not None and self._state.armed:
+                    rect = logical_monitor_rect(self._config)
+            self._emit(
+                monitoring=False,
+                monitor_rect=rect,
+                message="Monitoring paused — press 0 to reposition",
+            )
 
     def calibrate_now(self) -> bool:
         with self._lock:
             sensitivity = self._state.sensitivity
+        self._stop_monitor_loop(wait=True)
+        cancel_pending_grab()
         config = calibrate_from_cursor(sensitivity, save_debug=True)
         if config is None:
-            self._emit(message="No red detected — try again on cup rim")
+            self._emit(
+                armed=False,
+                monitoring=False,
+                monitor_rect=None,
+                message="No red detected — hover cup rim and press 0",
+            )
             return False
         self._config = config
+        rect = logical_monitor_rect(config)
         self._emit(
             armed=True,
-            message="Armed — monitoring cup",
+            monitoring=True,
+            blocked=False,
+            cup_on_table=False,
+            cup_gone=False,
+            monitor_rect=rect,
+            message="Calibrated — press 0 anytime to reposition",
             sensitivity=config.sensitivity,
         )
-        self._start_monitor_loop()
+        self._restart_monitor_loop()
         return True
 
     def manual_press_e(self) -> None:
@@ -158,7 +183,7 @@ class MonitorEngine:
 
         self._hotkey_listener = keyboard.Listener(on_press=on_press)
         self._hotkey_listener.start()
-        self._emit(message="Ready — hover cup rim, press 0 to arm")
+        self._emit(message="Hover over the bottom rim of the cup and press 0")
 
     def shutdown(self) -> None:
         self._stop.set()
@@ -177,23 +202,34 @@ class MonitorEngine:
         self._monitor_thread = threading.Thread(target=self._monitor_loop, daemon=True)
         self._monitor_thread.start()
 
-    def _stop_monitor_loop(self) -> None:
+    def _stop_monitor_loop(self, *, wait: bool = False) -> None:
         self._stop.set()
         cancel_pending_grab()
+        if wait and self._monitor_thread is not None and self._monitor_thread.is_alive():
+            self._monitor_thread.join(timeout=1.5)
+
+    def _restart_monitor_loop(self) -> None:
+        self._stop_monitor_loop(wait=True)
+        self._monitor_thread = None
+        self._stop.clear()
+        self._monitor_thread = threading.Thread(target=self._monitor_loop, daemon=True)
+        self._monitor_thread.start()
 
     def _monitor_loop(self) -> None:
         if self._config is None or self._config.baseline is None:
             return
         config = self._config
         baseline: Baseline = config.baseline
-        region = monitor_region(config)
-        preview_reg = preview_region(config)
         cup_present = True
         missing_frames = 0
         last_press = 0.0
         presses = 0
 
-        self._emit(monitoring=True, message="Watching cup…")
+        self._emit(
+            monitoring=True,
+            monitor_rect=logical_monitor_rect(config),
+            message="Watching cup — press 0 to reposition",
+        )
 
         with mss.MSS() as sct:
             while not self._stop.is_set():
@@ -201,7 +237,14 @@ class MonitorEngine:
                     auto_e = self._state.auto_e
                     auto_q = self._state.auto_q
                     config.sensitivity = self._state.sensitivity
+                    if self._config is not config:
+                        config = self._config
+                        baseline = config.baseline  # type: ignore[assignment]
+                        cup_present = True
+                        missing_frames = 0
 
+                region = monitor_region(config)
+                preview_reg = preview_region(config)
                 monitor_patch = capture_patch(sct, region)
                 preview_patch = capture_patch(sct, preview_reg)
                 blocked = capture_is_blocked(monitor_patch)
@@ -212,6 +255,7 @@ class MonitorEngine:
                         cup_on_table=False,
                         cup_gone=False,
                         message="Screen capture blocked — check permissions",
+                        monitor_rect=logical_monitor_rect(config),
                         preview=draw_preview_frame(preview_patch, config),
                     )
                     time.sleep(0.05)
@@ -259,8 +303,13 @@ class MonitorEngine:
                     red_excess=red_excess,
                     mean_r=mean_r,
                     e_presses=presses,
+                    monitor_rect=logical_monitor_rect(config),
                     preview=draw_preview_frame(preview_patch, config),
                 )
 
         cancel_pending_grab()
-        self._emit(monitoring=False)
+        rect = None
+        with self._lock:
+            if self._config is not None and self._state.armed:
+                rect = logical_monitor_rect(self._config)
+        self._emit(monitoring=False, monitor_rect=rect)

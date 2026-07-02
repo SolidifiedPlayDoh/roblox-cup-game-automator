@@ -26,3 +26,6 @@ build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
 packages = ["cup_guard"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"cup_guard/assets" = "cup_guard/assets"

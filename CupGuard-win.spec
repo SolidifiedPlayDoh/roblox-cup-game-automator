@@ -1,8 +1,12 @@
 # PyInstaller one-file spec for Windows
 # -*- mode: python ; coding: utf-8 -*-
+from pathlib import Path
+
 from PyInstaller.utils.hooks import collect_all
 
 datas, binaries, hiddenimports = collect_all("customtkinter")
+asset_dir = Path("cup_guard/assets")
+datas += [(str(p), f"cup_guard/assets/{p.name}") for p in asset_dir.glob("*.png")]
 
 a = Analysis(
     ["cup_guard/__main__.py"],

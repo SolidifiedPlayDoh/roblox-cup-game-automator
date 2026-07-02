@@ -22,3 +22,11 @@ def config_path() -> Path:
 
 def debug_image_path() -> Path:
     return app_data_dir() / "calibration_debug.png"
+
+
+def asset_path(name: str) -> Path:
+    if getattr(sys, "frozen", False):
+        base = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
+    else:
+        base = Path(__file__).resolve().parent
+    return base / "assets" / name

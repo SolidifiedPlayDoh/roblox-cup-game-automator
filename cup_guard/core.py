@@ -119,6 +119,15 @@ def monitor_region(config: Config) -> dict[str, int]:
     }
 
 
+def logical_monitor_rect(config: Config) -> tuple[int, int, int, int]:
+    """Monitor box as left, top, width, height in logical screen pixels."""
+    width = max(1, int(round(config.width / config.scale)))
+    height = max(1, int(round(config.height / config.scale)))
+    left = int(round(config.x - width / 2))
+    top = int(round(config.y - height / 2))
+    return left, top, width, height
+
+
 def preview_region(config: Config) -> dict[str, int]:
     x, y = to_capture_coords(config.x, config.y, config.scale)
     return {
