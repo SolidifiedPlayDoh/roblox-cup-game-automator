@@ -25,8 +25,8 @@ you sit at a table. there's a red cup. sometimes it moves. if you react too slow
 one full round with cup guard running.
 
 <p align="center">
-  <video src="https://github.com/SolidifiedPlayDoh/cup-guard/releases/download/demo-v1/demo.mp4" controls playsinline width="100%">
-    <a href="https://github.com/SolidifiedPlayDoh/cup-guard/releases/download/demo-v1/demo.mp4">watch the demo</a>
+  <video src="https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/download/demo-v1/demo.mp4" controls playsinline width="100%">
+    <a href="https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/download/demo-v1/demo.mp4">watch the demo</a>
   </video>
 </p>
 
@@ -64,10 +64,10 @@ give permissions to Cup Guard, or Terminal/Cursor if you're running from source.
 
 one click:
 
-- [macOS](https://github.com/SolidifiedPlayDoh/cup-guard/releases/download/v1.1.0/CupGuard-macOS-arm64.zip) — `CupGuard.app` in a zip
-- [Windows](https://github.com/SolidifiedPlayDoh/cup-guard/releases/download/v1.1.0/CupGuard.exe)
+- [macOS](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/download/v1.1.0/CupGuard-macOS-arm64.zip) — `CupGuard.app` in a zip
+- [Windows](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/download/v1.1.0/CupGuard.exe)
 
-more releases on [GitHub](https://github.com/SolidifiedPlayDoh/cup-guard/releases) if you want older builds or whatever (not like they are gonna be more than a day old if that)
+more releases on [GitHub](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases) if you want older builds or whatever (not like they are gonna be more than a day old if that)
 
 ## faq
 
@@ -123,8 +123,8 @@ yes. toggles in the overlay. you can also just use it as a fancy red pixel detec
 you need python 3.11+ and [uv](https://docs.astral.sh/uv/) because i have standards (barely).
 
 ```bash
-git clone https://github.com/SolidifiedPlayDoh/cup-guard.git
-cd cup-guard
+git clone https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator.git
+cd roblox-cup-game-automator
 uv venv
 uv pip install -e .
 ./run.sh
