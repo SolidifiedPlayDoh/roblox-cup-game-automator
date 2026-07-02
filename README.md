@@ -1,6 +1,6 @@
 # Cup Guard
 
-i made an entire desktop application for one (1) roblox mini-game.
+i made an entire desktop application for one roblox mini-game.
 
 that's it. that's the project.
 
