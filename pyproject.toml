@@ -3,6 +3,7 @@ name = "cup-guard"
 version = "1.1.0"
 description = "Overlay app that detects the Roblox red cup and auto-presses E/Q"
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "customtkinter>=5.2.0",
