@@ -22,12 +22,14 @@ you sit at a table. there's a red cup. sometimes it moves. if you react too slow
 
 ## demo
 
-one full round with cup guard running.
+one full round with cup guard running (compressed for github, no download clickbait).
 
 <p align="center">
-  <video src="https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/download/demo-v1/demo-sm.mp4" controls playsinline width="100%">
-    <a href="https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/download/demo-v1/demo-sm.mp4">watch the demo</a>
-  </video>
+  <img src="docs/demo.gif" alt="demo: one full round with cup guard active" width="100%">
+</p>
+
+<p align="center">
+  <sub><a href="https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/tag/demo-v1">full mp4 with sound</a> (720p, ~7.5MB)</sub>
 </p>
 
 ## what it does
