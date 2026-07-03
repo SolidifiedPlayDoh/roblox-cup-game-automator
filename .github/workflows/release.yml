@@ -13,17 +13,8 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v5
-      - name: Install dependencies
-        run: |
-          uv venv
-          uv pip install -e ".[dev]" pyinstaller
-      - name: Build .app
-        run: uv run pyinstaller CupGuard.spec --noconfirm
-      - name: Zip macOS app
-        run: |
-          cd dist
-          ditto -c -k --sequesterRsrc --keepParent CupGuard.app CupGuard-macOS-arm64.zip
+      - name: Build native Swift .app
+        run: native/scripts/build-app.sh
       - uses: actions/upload-artifact@v4
         with:
           name: CupGuard-macOS

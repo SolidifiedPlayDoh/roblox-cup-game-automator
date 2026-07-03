@@ -57,6 +57,7 @@ stuck? hit **Need help?** in the overlay. i included screenshots because i care 
 | platform | what it needs | why |
 |----------|---------------|-----|
 | macOS | Screen Recording | to look at the cup |
+| macOS | Input Monitoring | global **0** hotkey |
 | macOS | Accessibility | to fake key presses |
 | Windows | screen capture privacy | same deal |
 
@@ -64,12 +65,21 @@ give permissions to Cup Guard, or Terminal/Cursor if you're running from source.
 
 ## download! (simple :3)
 
-one click:
+one click (native Swift app — small, no Python):
 
-- [macOS](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/download/v1.1.0/CupGuard-macOS-arm64.zip) — `CupGuard.app` in a zip
-- [Windows](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/download/v1.1.0/CupGuard.exe)
+- [macOS (latest)](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/latest/download/CupGuard-macOS-arm64.zip) — `CupGuard.app` in a zip
+- [Windows (latest)](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/latest/download/CupGuard.exe)
 
-more releases on [GitHub](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases) if you want older builds or whatever (not like they are gonna be more than a day old if that)
+**first time on macOS** (required — GitHub download is still "unsigned"):
+
+1. unzip → drag **CupGuard.app** to **Applications**
+2. Terminal: `xattr -cr /Applications/CupGuard.app`
+3. **right-click → Open** (not double-click) the first time
+4. grant Screen Recording, Input Monitoring, and Accessibility when the app asks
+
+if it bounces forever and never opens, **Screen Time** may be blocking it — allow Cup Guard under Content & Privacy Restrictions, or run `/Applications/CupGuard.app/Contents/MacOS/CupGuard` in Terminal and send the error.
+
+more releases on [GitHub](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases)
 
 ## faq
 
@@ -140,8 +150,8 @@ uv run cup-guard start
 ## build it yourself
 
 ```bash
+native/scripts/build-app.sh                        # macOS native (recommended)
 uv pip install pyinstaller
-uv run pyinstaller CupGuard.spec --noconfirm      # macOS
 uv run pyinstaller CupGuard-win.spec --noconfirm  # Windows
 ```
 

@@ -1,0 +1,55 @@
+{
+  "": {
+    "dependencies": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/CupGuard.d",
+    "object": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/CupGuard.o",
+    "swift-dependencies": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/primary.swiftdeps"
+  },
+  "/Users/cardiffemde/roblox cup game/native/Sources/CupGuard/AppDelegate.swift": {
+    "object": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/AppDelegate.swift.o",
+    "swiftmodule": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/AppDelegate~partial.swiftmodule",
+    "swift-dependencies": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/AppDelegate.swiftdeps",
+    "diagnostics": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/AppDelegate.dia"
+  },
+  "/Users/cardiffemde/roblox cup game/native/Sources/CupGuard/Config.swift": {
+    "object": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/Config.swift.o",
+    "swiftmodule": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/Config~partial.swiftmodule",
+    "swift-dependencies": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/Config.swiftdeps",
+    "diagnostics": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/Config.dia"
+  },
+  "/Users/cardiffemde/roblox cup game/native/Sources/CupGuard/CupDetection.swift": {
+    "object": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/CupDetection.swift.o",
+    "swiftmodule": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/CupDetection~partial.swiftmodule",
+    "swift-dependencies": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/CupDetection.swiftdeps",
+    "diagnostics": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/CupDetection.dia"
+  },
+  "/Users/cardiffemde/roblox cup game/native/Sources/CupGuard/InputServices.swift": {
+    "object": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/InputServices.swift.o",
+    "swiftmodule": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/InputServices~partial.swiftmodule",
+    "swift-dependencies": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/InputServices.swiftdeps",
+    "diagnostics": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/InputServices.dia"
+  },
+  "/Users/cardiffemde/roblox cup game/native/Sources/CupGuard/MonitorEngine.swift": {
+    "object": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/MonitorEngine.swift.o",
+    "swiftmodule": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/MonitorEngine~partial.swiftmodule",
+    "swift-dependencies": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/MonitorEngine.swiftdeps",
+    "diagnostics": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/MonitorEngine.dia"
+  },
+  "/Users/cardiffemde/roblox cup game/native/Sources/CupGuard/OverlayWindowController.swift": {
+    "object": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/OverlayWindowController.swift.o",
+    "swiftmodule": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/OverlayWindowController~partial.swiftmodule",
+    "swift-dependencies": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/OverlayWindowController.swiftdeps",
+    "diagnostics": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/OverlayWindowController.dia"
+  },
+  "/Users/cardiffemde/roblox cup game/native/Sources/CupGuard/Permissions.swift": {
+    "object": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/Permissions.swift.o",
+    "swiftmodule": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/Permissions~partial.swiftmodule",
+    "swift-dependencies": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/Permissions.swiftdeps",
+    "diagnostics": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/Permissions.dia"
+  },
+  "/Users/cardiffemde/roblox cup game/native/Sources/CupGuard/ScreenCapture.swift": {
+    "object": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/ScreenCapture.swift.o",
+    "swiftmodule": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/ScreenCapture~partial.swiftmodule",
+    "swift-dependencies": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/ScreenCapture.swiftdeps",
+    "diagnostics": "/Users/cardiffemde/roblox cup game/native/.build/arm64-apple-macosx/release/CupGuard.build/ScreenCapture.dia"
+  }
+}
