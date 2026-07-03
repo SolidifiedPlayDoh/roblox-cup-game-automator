@@ -2,26 +2,25 @@ import AppKit
 import CoreGraphics
 import Foundation
 
-@MainActor
-final class MonitorEngine: ObservableObject {
-    @Published var armed = false
-    @Published var monitoring = false
-    @Published var blocked = false
-    @Published var cupOnTable = false
-    @Published var cupGone = false
-    @Published var redFrac = 0.0
-    @Published var redExcess = 0.0
-    @Published var meanR = 0.0
-    @Published var ePresses = 0
-    @Published var qPresses = 0
-    @Published var message = "Hover over the bottom rim of the cup and press 0"
-    @Published var previewImage: CGImage?
-    @Published var autoE = true
-    @Published var autoQ = true
-    @Published var sensitivity = 0.52
-    @Published var hasScreenRecording = false
-    @Published var hasInputMonitoring = false
-    @Published var hasAccessibility = false
+final class MonitorEngine {
+    var armed = false
+    var monitoring = false
+    var blocked = false
+    var cupOnTable = false
+    var cupGone = false
+    var redFrac = 0.0
+    var redExcess = 0.0
+    var meanR = 0.0
+    var ePresses = 0
+    var qPresses = 0
+    var message = "Hover over the bottom rim of the cup and press 0"
+    var previewImage: CGImage?
+    var autoE = true
+    var autoQ = true
+    var sensitivity = 0.52
+    var hasScreenRecording = false
+    var hasInputMonitoring = false
+    var hasAccessibility = false
 
     private var config: Config?
     private var monitorTimer: Timer?
@@ -59,7 +58,7 @@ final class MonitorEngine: ObservableObject {
         refreshPermissions()
         permissionTimer?.invalidate()
         permissionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.refreshPermissions() }
+            self?.refreshPermissions()
         }
     }
 
@@ -71,7 +70,7 @@ final class MonitorEngine: ObservableObject {
     func startHotkeys() {
         guard hotkeyListener == nil else { return }
         hotkeyListener = ZeroHotkeyListener { [weak self] in
-            Task { @MainActor in self?.calibrateNow() }
+            DispatchQueue.main.async { self?.calibrateNow() }
         }
         hotkeyListener?.start()
     }
@@ -97,6 +96,7 @@ final class MonitorEngine: ObservableObject {
         }
     }
 
+    @discardableResult
     func calibrateNow() -> Bool {
         stopMonitoring()
         cancelPendingGrab()
@@ -147,7 +147,7 @@ final class MonitorEngine: ObservableObject {
         monitoring = true
         monitorTimer?.invalidate()
         monitorTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 30.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.tick() }
+            self?.tick()
         }
     }
 
@@ -167,12 +167,10 @@ final class MonitorEngine: ObservableObject {
         cancelPendingGrab()
         let delay = Double.random(in: CupConstants.grabQMinDelay...CupConstants.grabQMaxDelay)
         grabTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
-            Task { @MainActor in
-                guard let self else { return }
-                KeyPress.pressQ()
-                self.qPresses += 1
-                self.message = "Q in \(String(format: "%.1f", delay))s → pressed (#\(self.qPresses))"
-            }
+            guard let self else { return }
+            KeyPress.pressQ()
+            self.qPresses += 1
+            self.message = "Q in \(String(format: "%.1f", delay))s → pressed (#\(self.qPresses))"
         }
         message = "Q in \(String(format: "%.1f", delay))s…"
     }
@@ -186,7 +184,6 @@ final class MonitorEngine: ObservableObject {
         guard let capture = ScreenCapture.grab(region: region) else {
             blocked = true
             message = "Screen capture failed — check Screen Recording permission"
-            SystemSettings.openScreenRecording()
             return
         }
 

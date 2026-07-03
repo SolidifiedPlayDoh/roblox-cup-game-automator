@@ -32,12 +32,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         StartupLog.write("applicationDidFinishLaunching")
         NSApp.setActivationPolicy(.regular)
 
-        do {
-            windowController = OverlayWindowController()
-            windowController?.showWindow()
-            NSApp.activate(ignoringOtherApps: true)
-            StartupLog.write("window shown")
-        }
+        windowController = OverlayWindowController()
+        windowController?.showWindow()
+        NSApp.activate(ignoringOtherApps: true)
+        StartupLog.write("window shown")
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

@@ -1,27 +1,30 @@
-Cup Guard — macOS install
+Cup Guard — macOS install (v2.2)
 
-1. Download CupGuard-macOS-arm64.zip from GitHub Releases (not AirDrop).
-2. Double-click the zip to unzip.
-3. Drag CupGuard.app into Applications.
-4. Open Terminal and run:
+TRY IN THIS ORDER:
 
-   xattr -cr /Applications/CupGuard.app
+=== 1. The .app ===
+1. Unzip CupGuard-macOS-arm64.zip
+2. Drag CupGuard.app → Applications
+3. Terminal:  xattr -cr /Applications/CupGuard.app
+4. Right-click CupGuard.app → Open → Open
 
-5. Right-click CupGuard.app in Applications → Open → Open.
-   (Required the first time — macOS blocks unsigned apps on double-click.)
+=== 2. If the icon bounces (won't open) ===
+Double-click "Run Cup Guard.command" in the zip folder.
+It runs the app from Terminal and saves errors to:
+  ~/Library/Logs/CupGuard/launch.log
+Send that log to whoever sent you this.
 
-6. In the app, tap Allow for each permission, or use Request all permissions.
+=== 3. If Screen Time blocks everything ===
+A parent must allow Cup Guard under:
+  Screen Time → Content & Privacy Restrictions → Allowed Apps
 
-7. In System Settings → Privacy & Security, enable Cup Guard for:
-   - Screen Recording
-   - Input Monitoring (for the 0 hotkey)
-   - Accessibility (for E/Q keys)
+=== 4. Nuclear option (always works if you have internet) ===
+Double-click install-from-source.sh in Terminal:
+  bash install-from-source.sh
+That installs from GitHub and puts "Run Cup Guard" on your Desktop.
+Grant permissions to Terminal instead of Cup Guard.
 
-Screen Time: if the app bounces and never opens, a parent must allow Cup Guard under
-Screen Time → Content & Privacy Restrictions → Allowed Apps.
-
-Still broken? Run in Terminal:
-
-   /Applications/CupGuard.app/Contents/MacOS/CupGuard
-
-Send the output. Log: ~/Library/Logs/CupGuard/native.log
+Permissions (in System Settings → Privacy & Security):
+  • Screen Recording — see the cup
+  • Input Monitoring — 0 hotkey
+  • Accessibility — E/Q keys

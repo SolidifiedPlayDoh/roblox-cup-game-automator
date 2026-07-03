@@ -70,7 +70,13 @@ one click (native Swift app — small, no Python):
 - [macOS (latest)](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/latest/download/CupGuard-macOS-arm64.zip) — `CupGuard.app` in a zip
 - [Windows (latest)](https://github.com/SolidifiedPlayDoh/roblox-cup-game-automator/releases/latest/download/CupGuard.exe)
 
-**first time on macOS** (required — GitHub download is still "unsigned"):
+**app bounces and never opens?**
+
+1. use **Run Cup Guard.command** from the zip (shows the real error)
+2. or run `bash install-from-source.sh` from the zip — installs from GitHub, runs via Terminal (bypasses most Gatekeeper/Screen Time blocks on the .app itself)
+3. Screen Time users: parent must allow the app under Content & Privacy Restrictions
+
+**first time on macOS** (unsigned app):
 
 1. unzip → drag **CupGuard.app** to **Applications**
 2. Terminal: `xattr -cr /Applications/CupGuard.app`

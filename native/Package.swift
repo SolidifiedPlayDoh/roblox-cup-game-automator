@@ -10,7 +10,13 @@ let package = Package(
     targets: [
         .executableTarget(
             name: "CupGuard",
-            path: "Sources/CupGuard"
+            path: "Sources/CupGuard",
+            linkerSettings: [
+                .linkedFramework("AppKit"),
+                .linkedFramework("ApplicationServices"),
+                .linkedFramework("CoreGraphics"),
+                .linkedFramework("Foundation"),
+            ]
         ),
     ]
 )

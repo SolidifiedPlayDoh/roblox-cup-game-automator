@@ -23,7 +23,6 @@ from cup_guard.core import (
     cup_is_present,
     draw_preview_frame,
     handle_cup_transition,
-    is_zero_key,
     logical_monitor_rect,
     monitor_region,
     preview_region,
@@ -31,8 +30,7 @@ from cup_guard.core import (
     press_q,
     schedule_random_grab,
 )
-from pynput import keyboard
-from pynput.keyboard import Key
+from cup_guard.hotkey import ZeroHotkeyListener, create_zero_listener
 
 
 @dataclass
@@ -63,7 +61,7 @@ class MonitorEngine:
         self._lock = threading.Lock()
         self._stop = threading.Event()
         self._monitor_thread: threading.Thread | None = None
-        self._hotkey_listener: keyboard.Listener | None = None
+        self._hotkey_listener: ZeroHotkeyListener | None = None
         self._state_queue: queue.Queue[LiveState] = queue.Queue(maxsize=1)
 
     @property
@@ -176,12 +174,10 @@ class MonitorEngine:
         if self._hotkey_listener is not None:
             return
 
-        def on_press(key: keyboard.Key | keyboard.KeyCode) -> None:
-            if is_zero_key(key):
-                threading.Thread(target=self.calibrate_now, daemon=True).start()
-            return None
+        def on_zero() -> None:
+            threading.Thread(target=self.calibrate_now, daemon=True).start()
 
-        self._hotkey_listener = keyboard.Listener(on_press=on_press)
+        self._hotkey_listener = create_zero_listener(on_zero)
         self._hotkey_listener.start()
         self._emit(message="Hover over the bottom rim of the cup and press 0")
 

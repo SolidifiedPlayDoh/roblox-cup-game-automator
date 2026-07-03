@@ -1,7 +1,6 @@
 import AppKit
 import CoreGraphics
 
-@MainActor
 final class OverlayWindowController: NSWindowController {
     private let engine = MonitorEngine()
     private var refreshTimer: Timer?
@@ -16,9 +15,9 @@ final class OverlayWindowController: NSWindowController {
     private let screenPermLabel = NSTextField(labelWithString: "Screen Recording")
     private let inputPermLabel = NSTextField(labelWithString: "Input Monitoring")
     private let accessPermLabel = NSTextField(labelWithString: "Accessibility")
-    private let monitorSwitch = NSSwitch()
-    private let autoESwitch = NSSwitch()
-    private let autoQSwitch = NSSwitch()
+    private let monitorCheck = NSButton(checkboxWithTitle: "Monitoring", target: nil, action: nil)
+    private let autoECheck = NSButton(checkboxWithTitle: "Auto-press E", target: nil, action: nil)
+    private let autoQCheck = NSButton(checkboxWithTitle: "Auto-press Q after E", target: nil, action: nil)
     private let sensitivitySlider = NSSlider(value: 0.52, minValue: 0.35, maxValue: 0.75, target: nil, action: nil)
     private let sensitivityValueLabel = NSTextField(labelWithString: "0.52")
 
@@ -46,7 +45,7 @@ final class OverlayWindowController: NSWindowController {
         refreshUI()
 
         refreshTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 30.0, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.refreshUI() }
+            self?.refreshUI()
         }
 
         // Never touch TCC APIs during launch — wait until the window is up.
@@ -93,18 +92,18 @@ final class OverlayWindowController: NSWindowController {
         sensitivitySlider.numberOfTickMarks = 41
         sensitivitySlider.allowsTickMarkValuesOnly = false
 
-        monitorSwitch.state = .off
-        autoESwitch.state = .on
-        autoQSwitch.state = .on
+        monitorCheck.state = .off
+        autoECheck.state = .on
+        autoQCheck.state = .on
 
         let stack = NSStackView(views: [
             row(title, statusLabel),
             permBox,
             previewView,
             redLabel, excessLabel, meanLabel, countLabel,
-            switchRow("Monitoring", monitorSwitch),
-            switchRow("Auto-press E", autoESwitch),
-            switchRow("Auto-press Q after E", autoQSwitch),
+            monitorCheck,
+            autoECheck,
+            autoQCheck,
             sensLabel,
             sensitivitySlider,
             sensitivityValueLabel,
@@ -137,12 +136,12 @@ final class OverlayWindowController: NSWindowController {
     }
 
     private func wireActions() {
-        monitorSwitch.target = self
-        monitorSwitch.action = #selector(monitorChanged)
-        autoESwitch.target = self
-        autoESwitch.action = #selector(autoEChanged)
-        autoQSwitch.target = self
-        autoQSwitch.action = #selector(autoQChanged)
+        monitorCheck.target = self
+        monitorCheck.action = #selector(monitorChanged)
+        autoECheck.target = self
+        autoECheck.action = #selector(autoEChanged)
+        autoQCheck.target = self
+        autoQCheck.action = #selector(autoQChanged)
         sensitivitySlider.target = self
         sensitivitySlider.action = #selector(sensitivityChanged)
     }
@@ -155,9 +154,9 @@ final class OverlayWindowController: NSWindowController {
         countLabel.stringValue = "E: \(engine.ePresses)   Q: \(engine.qPresses)"
         messageLabel.stringValue = engine.message
         sensitivityValueLabel.stringValue = String(format: "%.2f", engine.sensitivity)
-        monitorSwitch.state = engine.monitoring ? .on : .off
-        autoESwitch.state = engine.autoE ? .on : .off
-        autoQSwitch.state = engine.autoQ ? .on : .off
+        monitorCheck.state = engine.monitoring ? .on : .off
+        autoECheck.state = engine.autoE ? .on : .off
+        autoQCheck.state = engine.autoQ ? .on : .off
         if abs(sensitivitySlider.doubleValue - engine.sensitivity) > 0.01 {
             sensitivitySlider.doubleValue = engine.sensitivity
         }
@@ -201,15 +200,15 @@ final class OverlayWindowController: NSWindowController {
     @objc private func pressQ() { engine.manualPressQ() }
 
     @objc private func monitorChanged() {
-        engine.setMonitoring(monitorSwitch.state == .on)
+        engine.setMonitoring(monitorCheck.state == .on)
     }
 
     @objc private func autoEChanged() {
-        engine.autoE = autoESwitch.state == .on
+        engine.autoE = autoECheck.state == .on
     }
 
     @objc private func autoQChanged() {
-        engine.autoQ = autoQSwitch.state == .on
+        engine.autoQ = autoQCheck.state == .on
     }
 
     @objc private func sensitivityChanged() {
@@ -260,10 +259,6 @@ final class OverlayWindowController: NSWindowController {
         stack.orientation = .horizontal
         stack.distribution = .fillEqually
         return stack
-    }
-
-    private func switchRow(_ title: String, _ toggle: NSSwitch) -> NSStackView {
-        NSStackView(views: [NSTextField(labelWithString: title), toggle])
     }
 
     private func buttonsRow(_ buttons: NSButton...) -> NSStackView {

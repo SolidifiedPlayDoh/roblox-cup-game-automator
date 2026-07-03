@@ -105,8 +105,8 @@ class OverlayApp(ctk.CTk):
         self._help_window: HelpWindow | None = None
 
         self._build_ui()
-        self.engine.start_hotkeys()
         self.protocol("WM_DELETE_WINDOW", self._on_close)
+        self.after(250, self.engine.start_hotkeys)
         self.after(33, self._tick)
 
     def _place_top_right(self) -> None:

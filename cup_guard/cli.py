@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 import threading
 import time
 
@@ -24,6 +25,7 @@ from cup_guard.core import (
     open_screen_recording_settings,
     to_capture_coords,
 )
+from cup_guard.crash_report import check_mac_compatibility, notify, report_exception
 from cup_guard.engine import MonitorEngine
 
 
@@ -151,23 +153,35 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main() -> None:
+    from cup_guard.crash_report import install_handlers
+
+    install_handlers()
+    compat = check_mac_compatibility()
+    if compat is not None:
+        notify("Cup Guard cannot run", compat)
+        raise SystemExit(1)
+
     parser = build_parser()
     parser.set_defaults(command="gui")
     args = parser.parse_args()
-    if args.command == "gui":
-        from cup_guard.overlay import run_overlay
+    try:
+        if args.command == "gui":
+            from cup_guard.overlay import run_overlay
 
-        run_overlay()
-        return
-    if args.command == "start":
-        raise SystemExit(start_cli(args))
-    if args.command == "calibrate":
-        raise SystemExit(calibrate(args))
-    if args.command == "preview":
-        raise SystemExit(preview(args))
-    if args.command == "test-capture":
-        raise SystemExit(test_capture(args))
-    parser.print_help()
+            run_overlay()
+            return
+        if args.command == "start":
+            raise SystemExit(start_cli(args))
+        if args.command == "calibrate":
+            raise SystemExit(calibrate(args))
+        if args.command == "preview":
+            raise SystemExit(preview(args))
+        if args.command == "test-capture":
+            raise SystemExit(test_capture(args))
+        parser.print_help()
+    except Exception:
+        report_exception(*sys.exc_info())
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
